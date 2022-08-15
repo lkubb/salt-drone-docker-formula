@@ -1,0 +1,19 @@
+{%- set docker_sock = drone_docker.lookup.docker_sock %}
+{%- if not docker_sock %}
+{%-   if not drone_docker.install.rootless %}
+{%-     set docker_sock = "/var/run/podman/podman.sock" %}
+{%-   else %}
+{%-     set docker_sock = "/var/run/user/{}/podman/podman.sock".format(salt["user.info"](drone_docker.lookup.user.name).uid) %}
+{%-   endif %}
+{%- endif %}
+---
+version: "3.8"
+services:
+  drone_docker:
+    image: {{ drone_docker.lookup.containers.drone_docker.image }}
+    env_file:
+      - {{ drone_docker.lookup.paths.config_drone_docker }}
+    volumes:
+      - {{ docker_sock }}:/var/run/docker.sock
+    ports:
+      - {{ drone_docker.container.listen }}:3000
