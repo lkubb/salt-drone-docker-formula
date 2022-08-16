@@ -94,7 +94,12 @@ drone_docker:
       endpoint: null
       skip_verify: null
       token: null
-    tmate_enabled: null
+    tmate:
+      enabled: null
+      fingerprint_ed25519: null
+      fingerprint_rsa: null
+      host: null
+      port: null
     trace: null
     ui:
       disabled: null

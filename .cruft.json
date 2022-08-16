@@ -96,7 +96,13 @@
             "skip_verify": null,
             "token": null
           },
-          "tmate_enabled": null,
+          "tmate": {
+            "enabled": null,
+            "host": null,
+            "port": null,
+            "fingerprint_rsa": null,
+            "fingerprint_ed25519": null
+          },
           "trace": null,
           "ui": {
             "disabled": null,

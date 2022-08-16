@@ -9,71 +9,180 @@ drone_docker:
       # When applying `clean` states, also remove application data.
       # Setting this to true might incur accidental data loss!
     remove_all_data_for_sure: false
+   # Docker Runner configuration
+   # https://docs.drone.io/runner/docker/configuration/reference/
+   # For all values, you can suffix them with _pillar and specify a
+   # path for pillar.get to retrieve the value from. This avoids
+   # cache writes of secrets.
   config:
     cpu:
+        # Specify the CPU CFS scheduler period, which is used alongside the CPU quota
       period: null
+        # Impose a CPU CFS quota on all pipeline containers. The number of microseconds
+        # per CPU period that the container is limited to before throttled
       quota: null
+        # Limit the specific CPUs or cores a pipeline container can use
       set: null
+        # Set this flag to a value greater or less than the default of 1024 to
+        # increase or reduce a pipeline container’s weight
       shares: null
+      # Enables debug level logging
     debug: null
+      # Enables the new logging lifecycle to help prevent log truncation
     defer_tail_log: null
     docker:
+        # Provides the path to a Docker config.json file used to source registry
+        # credentials from third party system
       config: null
+        # Specifies the name of the docker network to create.
+        # By default it is a random string.
       network_id: null
+        # Disable writing the output from Docker pull to the build logs.
+        # This setting is enabled by default.
       stream_pull: null
     env_plugin:
+        # Provides the endpoint used to make http requests to an external environment
+        # variable plugin. The external environment variable plugin can be used to
+        # source custom pipeline environment variables from third party system.
       endpoint: null
+        # Disable SSL verification when making http requests to the plugin endpoint
       skip_verify: null
+        # Provides the secret token used to authenticate http requests
+        # to the plugin endpoint.
       token: null
     http:
+        # Configures the http listener port. The default value is :3000.
+        # Overriding this value is not recommended.
       bind: null
+        # Configures the http listener hostname. The default value is an empty string.
+        # Setting this value is not recommended
       host: null
+        # Configures the http listener protocol. The default value is http.
+        # Overriding this value is not recommended
       proto: null
     limit:
+        # Provides a white list of build events that can be processed by this runner.
+        # This provides an extra layer of security to limit the kind of workloads
+        # this runner can process.
       events: null
+        # Configures the runner to only process matching repositories.
+        # List of strings (can contain globs).
       repos: null
+        # Configures the runner to only process trusted repositories.
       trusted: null
     memory:
+        # The maximum amount of memory a single pipeline container can use,
+        # configured in bytes.
       limit: null
+        # The maximum amount of memory a single pipeline container is allowed to
+        # swap to disk, configured in bytes.
       swap_limit: null
+      # Configures the runner to only inject the clone credentials into the clone step.
     netrc_clone_only: null
     registry_plugin:
+        # Provides the endpoint used to make http requests to an external registry
+        # plugin. The external registry plugin can be used to source registry
+        # credentials from a third party system.
       endpoint: null
+        # Disable SSL verification when making http requests to the
+        # egistry plugin endpoint.
       skip_verify: null
+        # Provides the token used to authenticate http requests to the
+        # registry plugin endpoint.
       token: null
     rpc:
+        # Enables dumping the http request and response to the logs for debugging
+        # purposes.
       dump_http: null
+        # Enables dumping the http request and response body to the logs for
+        # debugging purposes.
       dump_http_body: null
+        # Required. Defines the hostname (and optional port) used to connect to
+        # the Drone server.
       host: null
+        # Required. Defines the protocol used to connect to the Drone server.
+        # The value must be either http or https
       proto: null
+        # Provides the shared secret used by the Drone server to authenticate
+        # http requests.
       secret: null
+        # Disable SSL verification when making http requests to the Drone server.
       skip_verify: null
     runner:
+        # Limits the number of concurrent pipelines that a runner can execute.
+        # The runner executes 2 concurrent pipelines by default.
       capacity: null
+        # Overrides the Docker image used to clone a repository.
       clone_image: null
+        # Provides a list of devices that are mounted into every pipeline step.
       devices: null
+        # Provides the path to an environment variable file used to define global
+        # environment variables injected into all pipeline steps.
       env_file: null
+        # Provides a set of global environment variables that are injected into
+        # every pipeline step.
+        # Note that this has to be a list of strings formatted like `name:value`.
       environ: null
+        # Provides a set of labels used to route a pipeline to a specific machine
+        # or set of machines.
+        # Note that this has to be a list of strings formatted like `src:tgt`.
       labels: null
+        # Limits the number of concurrent steps that a runner can execute for a
+        # single pipeline. This is disabled by default.
       max_procs: null
+        # Sets the name of the runner. The runner name is stored in the server
+        # and can be used to trace a build back to a specific runner.
       name: null
+        # Provides a list of Docker networks that are attached to every pipeline step.
       networks: null
+        # Provides a list of Docker images that are started as privileged containers
+        # by default. Depending on how you installed the runner (rootless vs rootful),
+        # this can effectively grant root privileges. Please use with caution.
       privileged_images: null
+        # Provides a set of global, named secrets that are available to all pipelines.
+        # Note that this has to be a list of strings formatted like `name:value`.
       secrets: null
+        # Provides a list of Docker volumes that are mounted into every pipeline step.
       volumes: null
     secret_plugin:
+        # Provides the endpoint used to make http requests to an external secret plugin.
       endpoint: null
+        # Disable SSL verification when making http requests to the plugin endpoint.
       skip_verify: null
+        # Provides the secret token used to authenticate http requests to the plugin
+        # endpoint.
       token: null
-    tmate_enabled: null
+    tmate:
+        # Enables remote ssh access to your pipeline container using tmate.
+        # https://tmate.io/
+      enabled: null
+        # Note that you can also configure a self-hosted tmate server using
+        # the following values.
+      fingerprint_rsa: null
+      fingerprint_ed25519: null
+      host: null
+      port: null
+      # Enables trace level logging.
     trace: null
     ui:
+        # Disables the runner’s user interface.
       disabled: null
+        # Sets the basic authentication password used to authenticate and acces
+        # the web dashboard. If no password is provided the web dashboard is disabled.
       password: null
+        # Sets the basic authentication realm used to authenticate and access
+        # the web dashboard.
       realm: null
+        # Sets the basic authentication username used to authenticate and access
+        # the web dashboard.
       username: null
   container:
+      # Define the host listening portion of the container port mapping.
     listen: 3000
+    # Drone does not natively integrate with podman. It needs the API socket to work.
+    # This makes sure it is available (user-level or system-level, depending on
+    # rootless vs rootful). Note that you can define the socket path manually
+    # in lookup:docker_sock.
   manage_podman_sock: true
 
   lookup:
