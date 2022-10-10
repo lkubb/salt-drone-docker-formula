@@ -8,6 +8,18 @@
 include:
   - {{ sls_config_clean }}
 
+{%- if drone_docker.install.autoupdate_service %}
+
+Podman autoupdate service is disabled for Drone Docker Runner:
+{%-   if drone_docker.install.rootless %}
+  compose.systemd_service_disabled:
+    - user: {{ drone_docker.lookup.user.name }}
+{%-   else %}
+  service.disabled:
+{%-   endif %}
+    - name: podman-auto-update.timer
+{%- endif %}
+
 Drone Docker Runner is absent:
   compose.removed:
     - name: {{ drone_docker.lookup.paths.compose }}

@@ -88,3 +88,15 @@ Drone Docker Runner is installed:
     - require:
       - user: {{ drone_docker.lookup.user.name }}
 {%- endif %}
+
+{%- if drone_docker.install.autoupdate_service is not none %}
+
+Podman autoupdate service is managed for Drone Docker Runner:
+{%-   if drone_docker.install.rootless %}
+  compose.systemd_service_{{ "enabled" if drone_docker.install.autoupdate_service else "disabled" }}:
+    - user: {{ drone_docker.lookup.user.name }}
+{%-   else %}
+  service.{{ "enabled" if drone_docker.install.autoupdate_service else "disabled" }}:
+{%-   endif %}
+    - name: podman-auto-update.timer
+{%- endif %}

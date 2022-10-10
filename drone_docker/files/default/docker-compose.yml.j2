@@ -17,3 +17,7 @@ services:
       - {{ docker_sock }}:/var/run/docker.sock
     ports:
       - {{ drone_docker.container.listen }}:3000
+{%- if drone_docker.install.autoupdate %}
+    labels:
+      - io.containers.autoupdate=registry
+{%- endif %}
