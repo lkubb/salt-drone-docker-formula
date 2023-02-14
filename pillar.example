@@ -152,6 +152,8 @@ drone_docker:
       volumes: null
     secret_plugin:
         # Provides the endpoint used to make http requests to an external secret plugin.
+        # Set this to http://drone_vault:3000 if you enable drone_vault support
+        # in this formula
       endpoint: null
         # Disable SSL verification when making http requests to the plugin endpoint.
       skip_verify: null
@@ -164,8 +166,8 @@ drone_docker:
       enabled: null
         # Note that you can also configure a self-hosted tmate server using
         # the following values.
-      fingerprint_rsa: null
       fingerprint_ed25519: null
+      fingerprint_rsa: null
       host: null
       port: null
       # Enables trace level logging.
@@ -191,11 +193,52 @@ drone_docker:
     # in lookup:docker_sock.
   manage_podman_sock: true
 
+    # drone-vault settings
+  vault:
+      # Environment variables
+    config:
+        # URL of the Vault server (e.g. https://vault.example.com:8200)
+      addr: null
+        # If AppRole auth is used, the role ID to use
+      approle_id: null
+        # If AppRole auth is used, the secret ID to use
+      approle_secret: null
+        # The mount point of the AppRole/Kubernetes authentication
+      auth_mount_point: null
+        # The authentication type to use. `approle`, `kubernetes`
+        # Otherwise, defaults to token auth
+      auth_type: null
+        # Path to a CA bundle/CA certificate to accept
+      cacert: null
+        # Path to a directory containing CA certificates to accept
+      capath: null
+        # Client certificate to use
+      client_cert: null
+        # Enable debug logging
+      drone_debug: null
+        # Required. Shared secret with runner clients
+      drone_secret: null
+      kubernetes_role: null
+        # Maximun number of retries for HTTP requests
+      max_retries: null
+        # Skip verifying TLS certificates
+      skip_verify: null
+        # SNI to use
+      tls_server_name: null
+        # Vault token to use when using token auth
+      token: null
+        # [Golang Time.duration] time between renewals
+      token_renewal: null
+        # Increment to request the token to be renewed
+      token_ttl: null
+
+      # Whether to setup drone-vault
+    enable: false
+
   lookup:
     rootgroup: root
     compose:
       create_pod: null
-      pod_args: null
       project_name: drone_docker
       remove_orphans: true
       build: false
@@ -213,6 +256,7 @@ drone_docker:
       base: /opt/containers/drone_docker
       compose: docker-compose.yml
       config_drone_docker: drone_docker.env
+      config_drone_vault: drone_vault.env
     user:
       groups: []
       home: null
@@ -223,6 +267,8 @@ drone_docker:
     containers:
       drone_docker:
         image: docker.io/drone/drone-runner-docker:latest
+      drone_vault:
+        image: docker.io/drone/drone-vault:latest
     docker_sock: null
 
   tofs:
@@ -256,3 +302,6 @@ drone_docker:
       drone_docker environment file is managed:
         - drone_docker_alt.env
         - drone_docker_alt.env.j2
+      drone_vault environment file is managed:
+        - drone_vault_alt.env
+        - drone_vault_alt.env.j2

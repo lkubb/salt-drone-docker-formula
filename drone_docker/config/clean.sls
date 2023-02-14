@@ -14,5 +14,6 @@ Drone Docker Runner environment files are absent:
   file.absent:
     - names:
       - {{ drone_docker.lookup.paths.config_drone_docker }}
+      - {{ drone_docker.lookup.paths.config_drone_vault }}
     - require:
       - sls: {{ sls_service_clean }}

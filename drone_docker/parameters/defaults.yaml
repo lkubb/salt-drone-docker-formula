@@ -26,6 +26,7 @@ values:
       base: /opt/containers/drone_docker
       compose: docker-compose.yml
       config_drone_docker: drone_docker.env
+      config_drone_vault: drone_vault.env
     user:
       groups: []
       home: null
@@ -36,6 +37,8 @@ values:
     containers:
       drone_docker:
         image: docker.io/drone/drone-runner-docker:latest
+      drone_vault:
+        image: docker.io/drone/drone-vault:latest
     docker_sock: null
   install:
     rootless: true
@@ -113,6 +116,26 @@ values:
   container:
     listen: 3000
   manage_podman_sock: true
+  vault:
+    config:
+      addr: null
+      approle_id: null
+      approle_secret: null
+      auth_mount_point: null
+      auth_type: null
+      cacert: null
+      capath: null
+      client_cert: null
+      drone_debug: null
+      drone_secret: null
+      kubernetes_role: null
+      max_retries: null
+      skip_verify: null
+      tls_server_name: null
+      token: null
+      token_renewal: null
+      token_ttl: null
+    enable: false
   # Just here for testing
   added_in_defaults: defaults_value
   winner: defaults

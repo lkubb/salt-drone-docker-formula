@@ -21,3 +21,19 @@ services:
     labels:
       - io.containers.autoupdate=registry
 {%- endif %}
+
+{%- if drone_docker.vault.enable %}
+    depends_on:
+      - drone_vault
+
+  drone_vault:
+    container_name: drone_vault
+    hostname: drone_vault
+    image: {{ drone_docker.lookup.containers.drone_vault.image }}
+    env_file:
+      - {{ drone_docker.lookup.paths.config_drone_vault }}
+{%-  if drone_docker.install.autoupdate %}
+    labels:
+      - io.containers.autoupdate=registry
+{%-   endif %}
+{%- endif %}

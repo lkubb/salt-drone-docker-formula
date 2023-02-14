@@ -19,12 +19,15 @@
       "abbr": "drone-docker",
       "abbr_pysafe": "drone_docker",
       "project_name": "drone_docker",
-      "containers": "drone_docker",
+      "containers": "drone_docker,drone_vault",
       "git_username": "lkubb",
       "_lookup": {
         "containers": {
           "drone_docker": {
             "image": "docker.io/drone/drone-runner-docker:latest"
+          },
+          "drone_vault": {
+            "image": "docker.io/drone/drone-vault:latest"
           }
         },
         "docker_sock": null
@@ -114,7 +117,29 @@
         "container": {
           "listen": 3000
         },
-        "manage_podman_sock": true
+        "manage_podman_sock": true,
+        "vault": {
+          "enable": false,
+          "config": {
+            "addr": null,
+            "approle_id": null,
+            "approle_secret": null,
+            "auth_mount_point": null,
+            "auth_type": null,
+            "cacert":null,
+            "capath": null,
+            "client_cert": null,
+            "drone_debug": null,
+            "drone_secret": null,
+            "kubernetes_role": null,
+            "max_retries": null,
+            "skip_verify": null,
+            "tls_server_name": null,
+            "token": null,
+            "token_renewal": null,
+            "token_ttl": null
+          }
+        }
       },
       "_template": "https://github.com/lkubb/salt-template-formula-compose"
     }

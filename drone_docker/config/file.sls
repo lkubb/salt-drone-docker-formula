@@ -18,6 +18,14 @@ Drone Docker Runner environment files are managed:
                                   indent_width=10,
                      )
                   }}
+{%- if drone_docker.vault.enable %}
+      - {{ drone_docker.lookup.paths.config_drone_vault }}:
+        - source: {{ files_switch(['drone_vault.env', 'drone_vault.env.j2'],
+                                  lookup='drone_vault environment file is managed',
+                                  indent_width=10,
+                     )
+                  }}
+{%- endif %}
     - mode: '0640'
     - user: root
     - group: {{ drone_docker.lookup.user.name }}
