@@ -1,8 +1,14 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_config_clean = tplroot ~ '.config.clean' %}
+{#-
+    Removes the drone_docker, drone_vault containers
+    and the corresponding user account and service units.
+    Has a depency on `drone_docker.config.clean`_.
+    If ``remove_all_data_for_sure`` was set, also removes all data.
+#}
+
+{%- set tplroot = tpldir.split("/")[0] %}
+{%- set sls_config_clean = tplroot ~ ".config.clean" %}
 {%- from tplroot ~ "/map.jinja" import mapdata as drone_docker with context %}
 
 include:
@@ -40,6 +46,25 @@ Drone Docker Runner compose file is absent:
     - name: {{ drone_docker.lookup.paths.compose }}
     - require:
       - Drone Docker Runner is absent
+
+{%- if drone_docker.install.podman_api %}
+
+Drone Docker Runner podman API is unavailable:
+  compose.systemd_service_dead:
+    - name: podman
+    - user: {{ drone_docker.lookup.user.name }}
+    - onlyif:
+      - fun: user.info
+        name: {{ drone_docker.lookup.user.name }}
+
+Drone Docker Runner podman API is disabled:
+  compose.systemd_service_disabled:
+    - name: podman
+    - user: {{ drone_docker.lookup.user.name }}
+    - onlyif:
+      - fun: user.info
+        name: {{ drone_docker.lookup.user.name }}
+{%- endif %}
 
 Drone Docker Runner user session is not initialized at boot:
   compose.lingering_managed:

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as drone_docker with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 
@@ -35,11 +34,28 @@ Drone Docker Runner paths are present:
     - require:
       - user: {{ drone_docker.lookup.user.name }}
 
+{%- if drone_docker.install.podman_api %}
+
+Drone Docker Runner podman API is enabled:
+  compose.systemd_service_enabled:
+    - name: podman
+    - user: {{ drone_docker.lookup.user.name }}
+    - require:
+      - Drone Docker Runner user session is initialized at boot
+
+Drone Docker Runner podman API is available:
+  compose.systemd_service_running:
+    - name: podman
+    - user: {{ drone_docker.lookup.user.name }}
+    - require:
+      - Drone Docker Runner user session is initialized at boot
+{%- endif %}
+
 Drone Docker Runner compose file is managed:
   file.managed:
     - name: {{ drone_docker.lookup.paths.compose }}
-    - source: {{ files_switch(['docker-compose.yml', 'docker-compose.yml.j2'],
-                              lookup='Drone Docker Runner compose file is present'
+    - source: {{ files_switch(["docker-compose.yml", "docker-compose.yml.j2"],
+                              lookup="Drone Docker Runner compose file is present"
                  )
               }}
     - mode: '0644'

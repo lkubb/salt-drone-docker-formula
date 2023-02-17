@@ -1,7 +1,12 @@
-# -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
+
+{#-
+    Stops the drone_docker, drone_vault container services
+    and disables them at boot time.
+#}
+
+{%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as drone_docker with context %}
 
 drone_docker service is dead:
