@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/lkubb/salt-template-formula-compose",
-  "commit": "97cd1b30d1525efd53961d1b7f365dbccb69d37e",
+  "commit": "d261bbd33723b1b8df5d67d58918868e3d70d76b",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -21,7 +21,7 @@
       "project_name": "drone_docker",
       "containers": "drone_docker,drone_vault",
       "git_username": "lkubb",
-      "_lookup": {
+      "lookup": {
         "containers": {
           "drone_docker": {
             "image": "docker.io/drone/drone-runner-docker:latest"
@@ -32,7 +32,7 @@
         },
         "docker_sock": null
       },
-      "_settings": {
+      "settings": {
         "config": {
           "cpu": {
             "period": null,

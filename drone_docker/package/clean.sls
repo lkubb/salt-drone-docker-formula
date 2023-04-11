@@ -51,7 +51,7 @@ Drone Docker Runner compose file is absent:
 
 Drone Docker Runner podman API is unavailable:
   compose.systemd_service_dead:
-    - name: podman
+    - name: podman.socket
     - user: {{ drone_docker.lookup.user.name }}
     - onlyif:
       - fun: user.info
@@ -59,7 +59,7 @@ Drone Docker Runner podman API is unavailable:
 
 Drone Docker Runner podman API is disabled:
   compose.systemd_service_disabled:
-    - name: podman
+    - name: podman.socket
     - user: {{ drone_docker.lookup.user.name }}
     - onlyif:
       - fun: user.info

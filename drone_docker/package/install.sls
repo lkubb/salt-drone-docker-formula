@@ -38,14 +38,14 @@ Drone Docker Runner paths are present:
 
 Drone Docker Runner podman API is enabled:
   compose.systemd_service_enabled:
-    - name: podman
+    - name: podman.socket
     - user: {{ drone_docker.lookup.user.name }}
     - require:
       - Drone Docker Runner user session is initialized at boot
 
 Drone Docker Runner podman API is available:
   compose.systemd_service_running:
-    - name: podman
+    - name: podman.socket
     - user: {{ drone_docker.lookup.user.name }}
     - require:
       - Drone Docker Runner user session is initialized at boot
