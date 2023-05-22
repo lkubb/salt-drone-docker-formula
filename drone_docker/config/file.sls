@@ -24,6 +24,11 @@ Drone Docker Runner environment files are managed:
                                   indent_width=10,
                      )
                   }}
+{%-   if drone_docker.vault.config.cacert %}
+      - {{ drone_docker.lookup.paths.base | path_join("tls", "ca.pem") }}:
+        - contents: {{ salt["x509.encode_certificate"](drone_docker.vault.config.cacert) | json }}
+        - mode: '0644'
+{%-   endif %}
 {%- endif %}
     - mode: '0640'
     - user: root

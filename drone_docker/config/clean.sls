@@ -20,5 +20,6 @@ Drone Docker Runner environment files are absent:
     - names:
       - {{ drone_docker.lookup.paths.config_drone_docker }}
       - {{ drone_docker.lookup.paths.config_drone_vault }}
+      - {{ drone_docker.lookup.paths.base | path_join("tls", "ca.pem") }}
     - require:
       - sls: {{ sls_service_clean }}

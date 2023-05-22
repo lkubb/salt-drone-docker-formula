@@ -32,6 +32,10 @@ services:
     image: {{ drone_docker.lookup.containers.drone_vault.image }}
     env_file:
       - {{ drone_docker.lookup.paths.config_drone_vault }}
+{%-  if drone_docker.vault.config.cacert %}
+    volumes:
+      - {{ drone_docker.lookup.paths.base | path_join("tls") }}:/tls
+{%-  endif %}
 {%-  if drone_docker.install.autoupdate %}
     labels:
       - io.containers.autoupdate=registry
