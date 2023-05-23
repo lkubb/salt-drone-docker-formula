@@ -1,6 +1,5 @@
 # vim: ft=sls
 
-
 {#-
     Stops the drone_docker, drone_vault container services
     and disables them at boot time.
