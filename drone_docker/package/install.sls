@@ -63,7 +63,7 @@ Drone Docker Runner compose file is managed:
     - mode: '0644'
     - user: root
     - group: {{ drone_docker.lookup.rootgroup }}
-    - makedirs: True
+    - makedirs: true
     - template: jinja
     - makedirs: true
     - context:
