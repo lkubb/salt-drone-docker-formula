@@ -11,6 +11,10 @@ version: "3.8"
 services:
   drone_docker:
     image: {{ drone_docker.lookup.containers.drone_docker.image }}
+    # Passing through the socket essentially amounts to privileged mode.
+    privileged: true
+    # security_opt:
+    #   - "label=disable"
     env_file:
       - {{ drone_docker.lookup.paths.config_drone_docker }}
     volumes:
