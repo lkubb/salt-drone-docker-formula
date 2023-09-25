@@ -41,7 +41,7 @@ Drone Docker Runner environment files are managed:
     - template: jinja
     - require:
       - user: {{ drone_docker.lookup.user.name }}
-    - watch_in:
+    - require_in:
       - Drone Docker Runner is installed
     - context:
         drone_docker: {{ drone_docker | json }}

@@ -34,3 +34,4 @@ Drone Docker Runner service is running:
 {%- endif %}
     - watch:
       - Drone Docker Runner is installed
+      - sls: {{ sls_config_file }}
